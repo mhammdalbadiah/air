@@ -1,6 +1,8 @@
-# ✈️ air
+#  air
 
-A C++ console application for managing airline data using three core data structures: **Linked Lists**, **Stacks**, and **Queues**. Built as a Data Structures course project at Majmaah University.
+A C++ airline management system with **two interfaces sharing one data core** : a terminal UI and a browser-based GUI, built on top of custom **Linked List**, **Stack**, and **Queue** template data structures. Fully containerized with Docker so it runs identically on any machine.
+
+Originally built as a Data Structures course project at Majmaah University, extended with a web backend, JSON persistence, and Docker packaging for the Software Engineering and Web Development courses.
 
 ---
 
@@ -14,35 +16,105 @@ A C++ console application for managing airline data using three core data struct
 
 ---
 
+## ✨ Features
+
+- **Two interfaces, one core** — a terminal UI and a web GUI, both driven by the same underlying engine and the same data file. Nothing built twice.
+- **Custom generic data structures** — Linked List, Stack, and Queue implemented from scratch as C++ templates, each supporting the same four data types.
+- **JSON persistence** — all data is saved to a single JSON file, shared live between whichever interface you're using.
+- **Seeded demo data** — the app ships with a sample dataset, so it shows real data immediately with zero setup.
+- **One-click reset** — restore the sample dataset or wipe to a clean slate, from either interface.
+- **Dockerized** — one image, no local toolchain required. Runs the same way on any device.
+
+---
+
+## 🚀 Usage
+
+```bash
+air -tui      # Launch the terminal UI (default if no flag is given)
+air -gui      # Launch the web GUI and print the local URL to open
+```
+
+Running `air -gui` starts a local web server and prints something like :
+
+```
+air GUI running → open http://localhost:8080 in your browser
+```
+
+---
+
+## 🐳 Running with Docker
+
+No `g++`, no `make`, no setup — just Docker.
+
+```bash
+# Build the image
+docker build -t air .
+
+# Run the terminal UI
+docker run -it air -tui
+
+# Run the web GUI (maps the container's port to your machine)
+docker run -it -p 8080:8080 air -gui
+```
+
+Then open **http://localhost:8080** in your browser for the GUI.
+
+By default, every `docker run` starts fresh from the seeded sample data — ideal for demos, since nothing carries over between runs. If you want changes to persist across container restarts, mount the `data/` folder as a volume :
+
+```bash
+docker run -it -p 8080:8080 -v air-data:/app/data air -gui
+```
+
+---
+
 ## 📁 Project Structure
 
 ```
-AirlineSystem/
+air/
 │
 ├── src/
-│   ├── main.cpp          # Entry point, main menu, all data structure declarations
-│   ├── menus.cpp         # All menu logic (Linked List, Stack, Queue)
-│   └── menus.h           # Function prototypes for all menus
+│   ├── main.cpp              # Entry point — parses -tui / -gui and dispatches
+│   │
+│   ├── tui/
+│   │   ├── menus.cpp         # Terminal menu logic (Linked List, Stack, Queue)
+│   │   └── menus.h
+│   │
+│   └── gui/
+│       ├── server.cpp        # Crow web server and API routes
+│       └── server.h
 │
-├── include/
-│   ├── Passenger.h       # Passenger class
-│   ├── BookingOffice.h   # Booking_Office class
-│   ├── Ticket.h          # Ticket class (holds list of Passengers)
-│   └── Flight.h          # Flight class (holds list of Tickets)
+├── core/                     # Shared engine — used by both interfaces
+│   ├── Passenger.h
+│   ├── BookingOffice.h
+│   ├── Ticket.h
+│   ├── Flight.h
+│   ├── LinkedList.h          # Generic singly linked list template
+│   ├── Stack.h                # Generic stack template (LIFO)
+│   ├── Queue.h                # Generic queue template (FIFO)
+│   ├── Storage.h              # JSON load / save / seed / reset
+│   └── Storage.cpp
 │
-├── data_structures/
-│   ├── LinkedList.h      # Generic singly linked list template
-│   ├── Stack.h           # Generic stack template (LIFO)
-│   └── Queue.h           # Generic queue template (FIFO)
+├── web/                       # Static frontend served by the GUI
+│   ├── index.html
+│   ├── style.css
+│   └── app.js
 │
-└── Makefile              # Build configuration
+├── data/
+│   ├── seed.json              # Baked-in sample dataset (read-only)
+│   └── airline.json           # Live data file — created on first run
+│
+├── tests/                     # Unit tests for the core library
+│
+├── Dockerfile
+├── Makefile
+└── README.md
 ```
 
 ---
 
 ## 🗂️ Data Types
 
-The system manages 4 data types across all data structures :
+The system manages 4 data types, shared across all data structures and both interfaces :
 
 ### Passenger
 | Field | Type | Rules |
@@ -79,7 +151,7 @@ The system manages 4 data types across all data structures :
 
 ## 🧱 Data Structures
 
-### 🔗 Linked List — Part 1
+### 🔗 Linked List
 A singly linked list that supports :
 - **Insert** — add a new node at the end
 - **Delete** — remove a node by position
@@ -87,7 +159,7 @@ A singly linked list that supports :
 - **Find** — search by ID or key field
 - **Display** — show all nodes
 
-### 📚 Stack — Part 2
+### 📚 Stack
 Follows **LIFO** ( Last In , First Out ) using the same `Node` structure :
 - **Push** — add to the top
 - **Pop** — remove from the top
@@ -95,7 +167,7 @@ Follows **LIFO** ( Last In , First Out ) using the same `Node` structure :
 - **Find** — search from top to bottom
 - **Display** — show all items top to bottom
 
-### 🚦 Queue — Part 3
+### 🚦 Queue
 Follows **FIFO** ( First In , First Out ) using `front` and `back` pointers :
 - **Enqueue** — add to the back
 - **Dequeue** — remove from the front
@@ -105,11 +177,69 @@ Follows **FIFO** ( First In , First Out ) using `front` and `back` pointers :
 
 ---
 
-## 🔨 Build & Run
+## 💾 Data & Persistence
+
+Both interfaces read and write the same file, `data/airline.json`, so a change made in the TUI is immediately visible in the GUI and vice versa.
+
+- **First run** — if `airline.json` doesn't exist yet, it's created from `data/seed.json`, so there's always something to look at right away.
+- **Reset to sample data** — available from the TUI menu and the GUI, restores `airline.json` back to the original seeded dataset.
+- **Clear all data** — wipes `airline.json` to an empty state, for starting completely from scratch.
+- All data is stored on disk in plain JSON — no external database required.
+
+---
+
+## 🖥️ Terminal UI — Menu Structure
+
+```
+Main Menu
+├── 1) Linked Lists
+│   ├── 1) Passengers
+│   ├── 2) Flights
+│   ├── 3) Booking Offices
+│   └── 4) Tickets
+│
+├── 2) Stacks
+│   ├── 1) Passengers
+│   ├── 2) Flights
+│   ├── 3) Booking Offices
+│   └── 4) Tickets
+│
+├── 3) Queues
+│   ├── 1) Passengers
+│   ├── 2) Flights
+│   ├── 3) Booking Offices
+│   └── 4) Tickets
+│
+├── 4) Reset to Sample Data
+├── 5) Clear All Data
+└── 0) Exit
+```
+
+Each sub-menu offers : Display , Insert / Push / Enqueue , Delete / Pop / Dequeue , Peek / Modify , Find , and Back.
+
+---
+
+## 🌐 Web GUI
+
+The GUI is served by an embedded [Crow](https://crowcpp.org/) web server and a lightweight HTML / CSS / JS frontend, talking to the same core engine as the TUI through a small JSON API.
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/passengers` | GET / POST / DELETE | List, add, or remove passengers |
+| `/api/flights` | GET / POST / DELETE | List, add, or remove flights |
+| `/api/tickets` | GET / POST / DELETE | List, add, or remove tickets |
+| `/api/offices` | GET / POST / DELETE | List, add, or remove booking offices |
+| `/api/reset` | POST | Restore sample data |
+| `/api/clear` | POST | Clear all data |
+
+---
+
+## 🔨 Build & Run ( Without Docker )
 
 ### Requirements
 - `g++` with C++17 support
 - `make`
+- [Crow](https://crowcpp.org/) ( header-only, required for `-gui` mode )
 
 ### Build
 ```bash
@@ -118,42 +248,14 @@ make
 
 ### Run
 ```bash
-./AirlineSystem
+./air -tui
+./air -gui
 ```
 
 ### Clean
 ```bash
 make clean
 ```
-
----
-
-## 🗺️ Menu Structure
-
-```
-Main Menu
-├── 1) Part 1 : Linked Lists
-│   ├── 1) Passengers
-│   ├── 2) Flights
-│   ├── 3) Booking Offices
-│   └── 4) Tickets
-│
-├── 2) Part 2 : Stacks
-│   ├── 1) Passengers
-│   ├── 2) Flights
-│   ├── 3) Booking Offices
-│   └── 4) Tickets
-│
-├── 3) Part 3 : Queues
-│   ├── 1) Passengers
-│   ├── 2) Flights
-│   ├── 3) Booking Offices
-│   └── 4) Tickets
-│
-└── 0) Exit
-```
-
-Each sub-menu offers : Display , Insert / Push / Enqueue , Delete / Pop / Dequeue , Peek / Modify , Find , and Back.
 
 ---
 
@@ -171,8 +273,9 @@ All setter functions include validation before accepting input :
 
 ## 📝 Notes
 
-- All data structures are **generic templates** ( `template <typename T>` ) and work with any of the 4 data types
-- Header files use `#pragma once` to prevent double inclusion
-- All data is stored **in memory only** — nothing is saved to disk between runs
-- The project uses `cin.ignore()` after `cin >>` to prevent input buffer issues with `getline`
-- Built and tested on **Visual Studio** ( Windows )
+- All data structures are **generic templates** ( `template <typename T>` ) and work with any of the 4 data types.
+- The core engine has no knowledge of either interface — the TUI and GUI are both thin layers on top of it.
+- Header files use `#pragma once` to prevent double inclusion.
+- Data persists to `data/airline.json` between runs when the `data/` folder is mounted as a volume ; otherwise each run starts fresh from the seed.
+- `cin.ignore()` is used after `cin >>` to prevent input buffer issues with `getline` in the TUI.
+- The project builds and runs identically on any machine with Docker installed, regardless of host OS.
