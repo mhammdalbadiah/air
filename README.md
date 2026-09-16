@@ -1,4 +1,4 @@
-# ✈️ Airline Management System
+# ✈️ air
 
 A C++ console application for managing airline data using three core data structures: **Linked Lists**, **Stacks**, and **Queues**. Built as a Data Structures course project at Majmaah University.
 
