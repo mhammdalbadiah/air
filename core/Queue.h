@@ -1,4 +1,3 @@
-/*Abdullah Abdulmosen Al-Nooh*/
 
 #pragma once 
 #include "LinkedList.h"
