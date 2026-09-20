@@ -103,7 +103,6 @@ air/
 │   ├── seed.json              # Baked-in sample dataset (read-only)
 │   └── airline.json           # Live data file — created on first run
 │
-├── tests/                     # Unit tests for the core library
 │
 ├── Dockerfile
 ├── Makefile
