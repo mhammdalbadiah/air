@@ -6,7 +6,7 @@ Originally built as a Data Structures course project at Majmaah University, exte
 
 ---
 
-## 👥 Team
+##  Team
 
 | Name | Role |
 |---|---|
@@ -16,7 +16,7 @@ Originally built as a Data Structures course project at Majmaah University, exte
 
 ---
 
-## ✨ Features
+##  Features
 
 - **Two interfaces, one core** — a terminal UI and a web GUI, both driven by the same underlying engine and the same data file. Nothing built twice.
 - **Custom generic data structures** — Linked List, Stack, and Queue implemented from scratch as C++ templates, each supporting the same four data types.
@@ -27,7 +27,7 @@ Originally built as a Data Structures course project at Majmaah University, exte
 
 ---
 
-## 🚀 Usage
+##  Usage
 
 ```bash
 air -tui      # Launch the terminal UI (default if no flag is given)
@@ -42,7 +42,7 @@ air GUI running → open http://localhost:8080 in your browser
 
 ---
 
-## 🐳 Running with Docker
+##  Running with Docker
 
 No `g++`, no `make`, no setup — just Docker.
 
@@ -67,7 +67,7 @@ docker run -it -p 8080:8080 -v air-data:/app/data air -gui
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 air/
@@ -111,7 +111,7 @@ air/
 
 ---
 
-## 🗂️ Data Types
+##  Data Types
 
 The system manages 4 data types, shared across all data structures and both interfaces :
 
@@ -148,9 +148,9 @@ The system manages 4 data types, shared across all data structures and both inte
 
 ---
 
-## 🧱 Data Structures
+##  Data Structures
 
-### 🔗 Linked List
+###  Linked List
 A singly linked list that supports :
 - **Insert** — add a new node at the end
 - **Delete** — remove a node by position
@@ -158,7 +158,7 @@ A singly linked list that supports :
 - **Find** — search by ID or key field
 - **Display** — show all nodes
 
-### 📚 Stack
+###  Stack
 Follows **LIFO** ( Last In , First Out ) using the same `Node` structure :
 - **Push** — add to the top
 - **Pop** — remove from the top
@@ -166,7 +166,7 @@ Follows **LIFO** ( Last In , First Out ) using the same `Node` structure :
 - **Find** — search from top to bottom
 - **Display** — show all items top to bottom
 
-### 🚦 Queue
+###  Queue
 Follows **FIFO** ( First In , First Out ) using `front` and `back` pointers :
 - **Enqueue** — add to the back
 - **Dequeue** — remove from the front
@@ -176,7 +176,7 @@ Follows **FIFO** ( First In , First Out ) using `front` and `back` pointers :
 
 ---
 
-## 💾 Data & Persistence
+##  Data & Persistence
 
 Both interfaces read and write the same file, `data/airline.json`, so a change made in the TUI is immediately visible in the GUI and vice versa.
 
@@ -187,7 +187,7 @@ Both interfaces read and write the same file, `data/airline.json`, so a change m
 
 ---
 
-## 🖥️ Terminal UI — Menu Structure
+##  Terminal UI — Menu Structure
 
 ```
 Main Menu
@@ -218,7 +218,7 @@ Each sub-menu offers : Display , Insert / Push / Enqueue , Delete / Pop / Dequeu
 
 ---
 
-## 🌐 Web GUI
+##  Web GUI
 
 The GUI is served by an embedded [Crow](https://crowcpp.org/) web server and a lightweight HTML / CSS / JS frontend, talking to the same core engine as the TUI through a small JSON API.
 
@@ -258,23 +258,4 @@ make clean
 
 ---
 
-## ✅ Input Validation
 
-All setter functions include validation before accepting input :
-- Empty input is rejected
-- Spaces-only input is rejected
-- Length limits are enforced per field
-- IDs must be digits only
-- Passport numbers must be alphanumeric
-- Invalid input loops back and asks again
-
----
-
-## 📝 Notes
-
-- All data structures are **generic templates** ( `template <typename T>` ) and work with any of the 4 data types.
-- The core engine has no knowledge of either interface — the TUI and GUI are both thin layers on top of it.
-- Header files use `#pragma once` to prevent double inclusion.
-- Data persists to `data/airline.json` between runs when the `data/` folder is mounted as a volume ; otherwise each run starts fresh from the seed.
-- `cin.ignore()` is used after `cin >>` to prevent input buffer issues with `getline` in the TUI.
-- The project builds and runs identically on any machine with Docker installed, regardless of host OS.
