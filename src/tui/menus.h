@@ -17,14 +17,7 @@
 
 #pragma once
 
-#include "../include/Passenger.h"
-#include "../include/BookingOffice.h"
-#include "../include/Ticket.h"
-#include "../include/Flight.h"
-#include "../data_structures/LinkedList.h"
-#include "../data_structures/Stack.h"
-#include "../data_structures/Queue.h"
-
+#include "core/Core.h"
 
 // ############################################################################
 //                         LINKED LIST MENU DECLARATIONS
