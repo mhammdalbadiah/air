@@ -12,12 +12,11 @@
 
 */
 
-// $$$$$$$$$$$ Prototypes $$$$$$$$$$
-
-
 #pragma once
 
-#include "core/Core.h"
+#include "../../core/Core.h"
+// Core.h has all the headers files that we gonna need 
+// ** IF YOU WANT TO ADD .h FILE ADD IT THERE "Core.h" 
 
 // ############################################################################
 //                         LINKED LIST MENU DECLARATIONS
@@ -47,3 +46,8 @@ void passengerQueueMenu ( Queue<Passenger>&     pQueue ) ;
 void flightQueueMenu    ( Queue<Flight>&         fQueue ) ;
 void officeQueueMenu    ( Queue<Booking_Office>& oQueue ) ;
 void ticketQueueMenu    ( Queue<Ticket>&         tQueue ) ;
+
+
+namespace tui {
+    void run();
+}
