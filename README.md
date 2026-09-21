@@ -18,33 +18,43 @@ Originally built as a Data Structures course project at Majmaah University, exte
 
 ##  Features
 
-- **Two interfaces, one core** — a terminal UI and a web GUI, both driven by the same underlying engine and the same data file. Nothing built twice.
-- **Custom generic data structures** — Linked List, Stack, and Queue implemented from scratch as C++ templates, each supporting the same four data types.
-- **JSON persistence** — all data is saved to a single JSON file, shared live between whichever interface you're using.
-- **Seeded demo data** — the app ships with a sample dataset, so it shows real data immediately with zero setup.
-- **One-click reset** — restore the sample dataset or wipe to a clean slate, from either interface.
-- **Dockerized** — one image, no local toolchain required. Runs the same way on any device.
+- **Two interfaces, one core** : a terminal UI and a web GUI, both driven by the same underlying engine and the same data file. Nothing built twice.
+- **Custom generic data structures** : Linked List, Stack, and Queue implemented from scratch as C++ templates, each supporting the same four data types.
+- **JSON persistence** : all data is saved to a single JSON file, shared live between whichever interface you're using.
+- **Seeded demo data** : the app ships with a sample dataset, so it shows real data immediately with zero setup.
+- **One-click reset** : restore the sample dataset or wipe to a clean slate, from either interface.
+- **Dockerized** : one image, no local toolchain required. Runs the same way on any device.
 
 ---
 
-##  Usage
+
+## Quick Install (Linux / macOS)
+
+Run the automated install script to build the project and configure global binary access (`air`) across your system and shells:
 
 ```bash
-air -tui      # Launch the terminal UI (default if no flag is given)
-air -gui      # Launch the web GUI and print the local URL to open
+chmod +x install.sh
+./install.sh
 ```
 
-Running `air -gui` starts a local web server and prints something like :
+## Usage 
 
+
+```bash
+air           # Launch the terminal UI (default if no flag is provided)
+air -tui      # Explicitly launch the terminal UI
+air -gui      # Launch the web GUI backend and print the local URL
 ```
+
+Running air -gui starts the local web server and prints:
+
+```bash
 air GUI running → open http://localhost:8080 in your browser
 ```
 
----
+## Running with Docker 
 
-##  Running with Docker
-
-No `g++`, no `make`, no setup — just Docker.
+No g++, no make, no local toolchain setup — just Docker.   
 
 ```bash
 # Build the image
@@ -57,56 +67,62 @@ docker run -it air -tui
 docker run -it -p 8080:8080 air -gui
 ```
 
-Then open **http://localhost:8080** in your browser for the GUI.
+Then open http://localhost:8080 in your browser for the GUI
 
-By default, every `docker run` starts fresh from the seeded sample data — ideal for demos, since nothing carries over between runs. If you want changes to persist across container restarts, mount the `data/` folder as a volume :
+   By default, every docker run starts fresh from the seeded sample data — ideal for demos, since nothing carries over between runs. If you want changes to persist across container restarts, mount the data/ folder as a volume:   
 
 ```bash
 docker run -it -p 8080:8080 -v air-data:/app/data air -gui
 ```
 
----
+
+
+
+
+
 
 ##  Project Structure
 
 ```
 air/
 │
+├── install.sh                # Automated build and binary installation script
+├── Makefile                  # Build targets (all, install, clean)[cite: 1]
+├── Dockerfile                # Multi-stage Docker container build[cite: 1]
+├── README.md                 # Project documentation[cite: 1]
+│
 ├── src/
-│   ├── main.cpp              # Entry point — parses -tui / -gui and dispatches
+│   ├── main.cpp              # Entry point — parses -tui / -gui and dispatches[cite: 1]
 │   │
 │   ├── tui/
-│   │   ├── menus.cpp         # Terminal menu logic (Linked List, Stack, Queue)
-│   │   └── menus.h
+│   │   ├── menus.cpp         # Terminal menu logic and run() loop[cite: 1]
+│   │   └── menus.h           # TUI and sub-menu function declarations[cite: 1]
 │   │
 │   └── gui/
-│       ├── server.cpp        # Crow web server and API routes
-│       └── server.h
+│       ├── server.cpp        # Crow web server and API routes[cite: 1]
+│       └── server.h          # GUI server declarations[cite: 1]
 │
-├── core/                     # Shared engine — used by both interfaces
-│   ├── Passenger.h
-│   ├── BookingOffice.h
-│   ├── Ticket.h
-│   ├── Flight.h
-│   ├── LinkedList.h          # Generic singly linked list template
-│   ├── Stack.h                # Generic stack template (LIFO)
-│   ├── Queue.h                # Generic queue template (FIFO)
-│   ├── Storage.h              # JSON load / save / seed / reset
-│   └── Storage.cpp
+├── core/                     # Shared engine — used by both interfaces[cite: 1]
+│   ├── Core.h                # Master umbrella header for all core components
+│   ├── ProgressBar.h         # Animated terminal loading bar
+│   ├── Passenger.h           # Passenger model[cite: 1]
+│   ├── BookingOffice.h       # Booking Office model[cite: 1]
+│   ├── Ticket.h              # Ticket model[cite: 1]
+│   ├── Flight.h              # Flight model[cite: 1]
+│   ├── LinkedList.h          # Generic singly linked list template[cite: 1]
+│   ├── Stack.h               # Generic stack template (LIFO)[cite: 1]
+│   ├── Queue.h               # Generic queue template (FIFO)[cite: 1]
+│   ├── Storage.h             # JSON load / save / seed / reset[cite: 1]
+│   └── Storage.cpp           # JSON persistence implementation[cite: 1]
 │
-├── web/                       # Static frontend served by the GUI
-│   ├── index.html
-│   ├── style.css
-│   └── app.js
+├── web/                      # Static frontend served by the GUI[cite: 1]
+│   ├── index.html            # Single page web interface[cite: 1]
+│   ├── style.css             # Frontend styling[cite: 1]
+│   └── app.js                # Frontend API interactions[cite: 1]
 │
-├── data/
-│   ├── seed.json              # Baked-in sample dataset (read-only)
-│   └── airline.json           # Live data file — created on first run
-│
-│
-├── Dockerfile
-├── Makefile
-└── README.md
+└── data/
+    ├── seed.json             # Baked-in sample dataset (read-only)[cite: 1]
+    └── airline.json          # Live data file — created on first run[cite: 1]
 ```
 
 ---
@@ -150,7 +166,7 @@ The system manages 4 data types, shared across all data structures and both inte
 
 ##  Data Structures
 
-###  Linked List
+### 🔗 Linked List
 A singly linked list that supports :
 - **Insert** — add a new node at the end
 - **Delete** — remove a node by position
@@ -187,36 +203,7 @@ Both interfaces read and write the same file, `data/airline.json`, so a change m
 
 ---
 
-##  Terminal UI — Menu Structure
 
-```
-Main Menu
-├── 1) Linked Lists
-│   ├── 1) Passengers
-│   ├── 2) Flights
-│   ├── 3) Booking Offices
-│   └── 4) Tickets
-│
-├── 2) Stacks
-│   ├── 1) Passengers
-│   ├── 2) Flights
-│   ├── 3) Booking Offices
-│   └── 4) Tickets
-│
-├── 3) Queues
-│   ├── 1) Passengers
-│   ├── 2) Flights
-│   ├── 3) Booking Offices
-│   └── 4) Tickets
-│
-├── 4) Reset to Sample Data
-├── 5) Clear All Data
-└── 0) Exit
-```
-
-Each sub-menu offers : Display , Insert / Push / Enqueue , Delete / Pop / Dequeue , Peek / Modify , Find , and Back.
-
----
 
 ##  Web GUI
 
@@ -233,7 +220,7 @@ The GUI is served by an embedded [Crow](https://crowcpp.org/) web server and a l
 
 ---
 
-## 🔨 Build & Run ( Without Docker )
+##  Build & Run ( Without Docker )
 
 ### Requirements
 - `g++` with C++17 support
@@ -257,5 +244,3 @@ make clean
 ```
 
 ---
-
-
