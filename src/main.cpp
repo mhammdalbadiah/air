@@ -15,7 +15,7 @@ namespace gui {
 #ifndef AIR_GUI_IMPLEMENTED
 namespace gui {
     void run() {
-        cout << "air GUI running -> open http://localhost:8080 in your browser\n";
+        cout << "air GUI running -> open http://localhost:8080 in your browser\n\n\n\n" ;
     }
 }
 #endif
