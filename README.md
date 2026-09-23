@@ -85,44 +85,55 @@ docker run -it -p 8080:8080 -v air-data:/app/data air -gui
 
 ```
 air/
+├── core/
+│   ├── BookingOffice.h       # Booking office model
+│   ├── Core.h                # Main shared/core functionality
+│   ├── Flight.h              # Flight model
+│   ├── LinkedList.h          # Generic singly linked list
+│   ├── Passenger.h           # Passenger model
+│   ├── ProgressBar.h         # Terminal progress/loading bar
+│   ├── Queue.h               # Generic FIFO queue
+│   ├── Stack.h               # Generic LIFO stack
+│   └── Ticket.h              # Ticket model
 │
-├── install.sh                # Automated build and binary installation script
-├── Makefile                  # Build targets (all, install, clean)[cite: 1]
-├── Dockerfile                # Multi-stage Docker container build[cite: 1]
-├── README.md                 # Project documentation[cite: 1]
+├── data/
+│   ├── airline.json          # Current airline system data
+│   └── seed.json             # Initial/sample dataset
 │
 ├── src/
-│   ├── main.cpp              # Entry point — parses -tui / -gui and dispatches[cite: 1]
+│   ├── gui/
+│   │   ├── server.cpp        # Web server and API implementation
+│   │   └── server.h          # Web server declarations
 │   │
 │   ├── tui/
-│   │   ├── menus.cpp         # Terminal menu logic and run() loop[cite: 1]
-│   │   └── menus.h           # TUI and sub-menu function declarations[cite: 1]
+│   │   ├── menus.cpp         # Terminal menu logic
+│   │   └── menus.h           # Terminal menu declarations
 │   │
-│   └── gui/
-│       ├── server.cpp        # Crow web server and API routes[cite: 1]
-│       └── server.h          # GUI server declarations[cite: 1]
+│   └── main.cpp              # Main program entry point
 │
-├── core/                     # Shared engine — used by both interfaces[cite: 1]
-│   ├── Core.h                # Master umbrella header for all core components
-│   ├── ProgressBar.h         # Animated terminal loading bar
-│   ├── Passenger.h           # Passenger model[cite: 1]
-│   ├── BookingOffice.h       # Booking Office model[cite: 1]
-│   ├── Ticket.h              # Ticket model[cite: 1]
-│   ├── Flight.h              # Flight model[cite: 1]
-│   ├── LinkedList.h          # Generic singly linked list template[cite: 1]
-│   ├── Stack.h               # Generic stack template (LIFO)[cite: 1]
-│   ├── Queue.h               # Generic queue template (FIFO)[cite: 1]
-│   ├── Storage.h             # JSON load / save / seed / reset[cite: 1]
-│   └── Storage.cpp           # JSON persistence implementation[cite: 1]
+├── web/
+│   ├── html/
+│   │   ├── dashboard.html    # Main dashboard
+│   │   ├── data-structures.html
+│   │   │                     # Data structure visualization
+│   │   ├── flights.html      # Flight management page
+│   │   ├── index.html        # Main web entry/login page
+│   │   ├── offices.html      # Booking office management
+│   │   ├── passengers.html   # Passenger management
+│   │   ├── settings.html     # Application settings
+│   │   └── tickets.html      # Ticket management
+│   │
+│   ├── images/
+│   │   └── Airplane.jpg      # Airline interface image
+│   │
+│   ├── app.js                # Main frontend JavaScript logic
+│   ├── components.js         # Shared frontend components
+│   └── style.css             # Shared frontend styling
 │
-├── web/                      # Static frontend served by the GUI[cite: 1]
-│   ├── index.html            # Single page web interface[cite: 1]
-│   ├── style.css             # Frontend styling[cite: 1]
-│   └── app.js                # Frontend API interactions[cite: 1]
-│
-└── data/
-    ├── seed.json             # Baked-in sample dataset (read-only)[cite: 1]
-    └── airline.json          # Live data file — created on first run[cite: 1]
+├── .gitignore
+├── Dockerfile                # Docker configuration
+├── Makefile                  # Build commands
+└── README.md                 # Project documentation
 ```
 
 ---
