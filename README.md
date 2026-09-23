@@ -87,42 +87,56 @@ docker run -it -p 8080:8080 -v air-data:/app/data air -gui
 air/
 │
 ├── install.sh                # Automated build and binary installation script
-├── Makefile                  # Build targets (all, install, clean)[cite: 1]
-├── Dockerfile                # Multi-stage Docker container build[cite: 1]
-├── README.md                 # Project documentation[cite: 1]
+├── Makefile                  # Build targets for the project
+├── Dockerfile                # Docker container build configuration
+├── README.md                 # Project documentation
+├── .gitignore                # Files and folders ignored by Git
 │
 ├── src/
-│   ├── main.cpp              # Entry point — parses -tui / -gui and dispatches[cite: 1]
+│   ├── main.cpp              # Entry point — parses -tui / -gui and dispatches
 │   │
 │   ├── tui/
-│   │   ├── menus.cpp         # Terminal menu logic and run() loop[cite: 1]
-│   │   └── menus.h           # TUI and sub-menu function declarations[cite: 1]
+│   │   ├── menus.cpp         # Terminal menu logic and implementation
+│   │   └── menus.h           # Terminal menu function declarations
 │   │
 │   └── gui/
-│       ├── server.cpp        # Crow web server and API routes[cite: 1]
-│       └── server.h          # GUI server declarations[cite: 1]
+│       ├── server.cpp        # Crow web server and API routes
+│       └── server.h          # GUI server declarations
 │
-├── core/                     # Shared engine — used by both interfaces[cite: 1]
-│   ├── Core.h                # Master umbrella header for all core components
-│   ├── ProgressBar.h         # Animated terminal loading bar
-│   ├── Passenger.h           # Passenger model[cite: 1]
-│   ├── BookingOffice.h       # Booking Office model[cite: 1]
-│   ├── Ticket.h              # Ticket model[cite: 1]
-│   ├── Flight.h              # Flight model[cite: 1]
-│   ├── LinkedList.h          # Generic singly linked list template[cite: 1]
-│   ├── Stack.h               # Generic stack template (LIFO)[cite: 1]
-│   ├── Queue.h               # Generic queue template (FIFO)[cite: 1]
-│   ├── Storage.h             # JSON load / save / seed / reset[cite: 1]
-│   └── Storage.cpp           # JSON persistence implementation[cite: 1]
+├── core/                     # Shared core components used by the system
+│   ├── BookingOffice.h       # Booking Office model
+│   ├── Core.h                # Main core header
+│   ├── Flight.h              # Flight model
+│   ├── LinkedList.h          # Generic singly linked list template
+│   ├── Passenger.h           # Passenger model
+│   ├── ProgressBar.h         # Terminal progress/loading bar
+│   ├── Queue.h               # Generic queue template (FIFO)
+│   ├── Stack.h               # Generic stack template (LIFO)
+│   └── Ticket.h              # Ticket model
 │
-├── web/                      # Static frontend served by the GUI[cite: 1]
-│   ├── index.html            # Single page web interface[cite: 1]
-│   ├── style.css             # Frontend styling[cite: 1]
-│   └── app.js                # Frontend API interactions[cite: 1]
+├── data/
+│   ├── airline.json          # Airline system data
+│   └── seed.json             # Initial/sample dataset
 │
-└── data/
-    ├── seed.json             # Baked-in sample dataset (read-only)[cite: 1]
-    └── airline.json          # Live data file — created on first run[cite: 1]
+└── web/                      # Frontend files served by the GUI
+    │
+    ├── html/                 # HTML pages for the web interface
+    │   ├── dashboard.html    # Main dashboard page
+    │   ├── data-structures.html # Data structures visualization page
+    │   ├── flights.html      # Flight management page
+    │   ├── index.html        # Main web interface entry page
+    │   ├── offices.html      # Booking Office management page
+    │   ├── passengers.html   # Passenger management page
+    │   ├── settings.html     # Application settings page
+    │   └── tickets.html      # Ticket management page
+    │
+    ├── images/               # Images used by the frontend
+    │   └── Airplane.jpg      # Airplane image used by the interface
+    │
+    ├── .DS_Store             # macOS folder metadata file
+    ├── app.js                # Frontend logic and API interactions
+    ├── components.js         # Shared frontend components
+    └── style.css             # Shared frontend styling
 ```
 
 ---
