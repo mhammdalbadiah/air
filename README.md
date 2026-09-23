@@ -85,55 +85,57 @@ docker run -it -p 8080:8080 -v air-data:/app/data air -gui
 
 ```
 air/
-├── core/
-│   ├── BookingOffice.h       # Booking office model
-│   ├── Core.h                # Main shared/core functionality
-│   ├── Flight.h              # Flight model
-│   ├── LinkedList.h          # Generic singly linked list
-│   ├── Passenger.h           # Passenger model
-│   ├── ProgressBar.h         # Terminal progress/loading bar
-│   ├── Queue.h               # Generic FIFO queue
-│   ├── Stack.h               # Generic LIFO stack
-│   └── Ticket.h              # Ticket model
 │
-├── data/
-│   ├── airline.json          # Current airline system data
-│   └── seed.json             # Initial/sample dataset
+├── Makefile                  # Build targets (all, install, clean)
+├── Dockerfile                # Multi-stage Docker container build
+├── README.md                 # Project documentation
+├── .gitignore                # Files and directories ignored by Git
 │
 ├── src/
-│   ├── gui/
-│   │   ├── server.cpp        # Web server and API implementation
-│   │   └── server.h          # Web server declarations
+│   ├── main.cpp              # Entry point — parses -tui / -gui and dispatches
 │   │
 │   ├── tui/
-│   │   ├── menus.cpp         # Terminal menu logic
-│   │   └── menus.h           # Terminal menu declarations
+│   │   ├── menus.cpp         # Terminal menu logic and run() loop
+│   │   └── menus.h           # TUI and sub-menu function declarations
 │   │
-│   └── main.cpp              # Main program entry point
+│   └── gui/
+│       ├── server.cpp        # Crow web server and API routes
+│       └── server.h          # GUI server declarations
 │
-├── web/
-│   ├── html/
-│   │   ├── dashboard.html    # Main dashboard
+├── core/                     # Shared engine — used by both interfaces
+│   ├── Core.h                # Master umbrella header for all core components
+│   ├── ProgressBar.h         # Animated terminal loading bar
+│   ├── Passenger.h           # Passenger model
+│   ├── BookingOffice.h       # Booking Office model
+│   ├── Ticket.h              # Ticket model
+│   ├── Flight.h              # Flight model
+│   ├── LinkedList.h          # Generic singly linked list template
+│   ├── Stack.h               # Generic stack template (LIFO)
+│   └── Queue.h               # Generic queue template (FIFO)
+│
+├── web/                      # Static frontend served by the GUI
+│   │
+│   ├── html/                 # HTML pages for the web interface
+│   │   ├── index.html        # Main web interface entry page
+│   │   ├── dashboard.html    # Main dashboard and system overview
+│   │   ├── flights.html      # Flight management interface
+│   │   ├── passengers.html   # Passenger management interface
+│   │   ├── tickets.html      # Ticket management interface
+│   │   ├── offices.html      # Booking Office management interface
 │   │   ├── data-structures.html
-│   │   │                     # Data structure visualization
-│   │   ├── flights.html      # Flight management page
-│   │   ├── index.html        # Main web entry/login page
-│   │   ├── offices.html      # Booking office management
-│   │   ├── passengers.html   # Passenger management
-│   │   ├── settings.html     # Application settings
-│   │   └── tickets.html      # Ticket management
+│   │   │                     # Data structure visualization interface
+│   │   └── settings.html     # Application and data settings interface
 │   │
-│   ├── images/
-│   │   └── Airplane.jpg      # Airline interface image
+│   ├── images/               # Images and visual assets used by the frontend
+│   │   └── Airplane.jpg      # Airplane image used by the web interface
 │   │
-│   ├── app.js                # Main frontend JavaScript logic
-│   ├── components.js         # Shared frontend components
-│   └── style.css             # Shared frontend styling
+│   ├── style.css             # Shared frontend styling
+│   ├── app.js                # Frontend logic and API interactions
+│   └── components.js         # Shared and reusable frontend components
 │
-├── .gitignore
-├── Dockerfile                # Docker configuration
-├── Makefile                  # Build commands
-└── README.md                 # Project documentation
+└── data/
+    ├── seed.json             # Baked-in sample dataset
+    └── airline.json          # Live airline application data
 ```
 
 ---
